@@ -41,9 +41,9 @@ class NotificationsApi {
       );
 
   //Method untuk membatalkan pesan notifikasi dapat dibatalkan oleh pengguna, kita tambahkan beberapa fungsi baru, yaitu fungsi cancelNotification, cancelAllNotification dan cancelNotificationByTag.
-  Future cancelNotification(int id) => _notifications.cancel(id);
-  Future cancelAllNotification() => _notifications.cancelAll();
-  Future cancelNotificationByTag(String tag) =>
+  static Future cancelNotification(int id) => _notifications.cancel(id);
+  static Future cancelAllNotification() => _notifications.cancelAll();
+  static Future cancelNotificationByTag(String tag) =>
       _notifications.cancel(0, tag: tag);
 
 //Fugsi yang digunakan untuk mengolah waktu munculnya pemberitahuan (notifikasi) berdasarkan zona waktu yang ditentukan (dalam hal ini yaitu “Asia/Jakarta”).

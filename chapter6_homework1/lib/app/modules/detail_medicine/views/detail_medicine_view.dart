@@ -1,3 +1,5 @@
+import 'package:chapter6_homework1/app/data/medicine_model.dart';
+import 'package:chapter6_homework1/app/data/notifications_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -5,19 +7,74 @@ import 'package:get/get.dart';
 import '../controllers/detail_medicine_controller.dart';
 
 class DetailMedicineView extends GetView<DetailMedicineController> {
-  const DetailMedicineView({Key? key}) : super(key: key);
+  const DetailMedicineView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('DetailMedicineView'),
+        title: const Text('Detail Medicine Schedule'),
         centerTitle: true,
       ),
-      body: Center(
-        child: Text(
-          'DetailMedicineView is working',
-          style: TextStyle(fontSize: 20),
-        ),
+      body: ListView(
+        children: [
+          FutureBuilder<MedicineModel>(
+            future: controller.getMedicineData(Get.arguments),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ListTile(
+                  title: Text(
+                    snapshot.data!.name,
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  subtitle: Text(
+                    "${snapshot.data!.frequency.toString()} kali sehari",
+                  ),
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
+          FutureBuilder<List<NotificationModel>>(
+            future: controller.getNotificationData(Get.arguments),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(snapshot.data![index].time),
+                    );
+                  },
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
+          Container(
+            height: 50,
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.indigo,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(32.0)),
+              ),
+              child: const Text('I don\'t need to take this medicine anymore'),
+              onPressed: () {
+                controller.deleteMedicine(Get.arguments);
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
