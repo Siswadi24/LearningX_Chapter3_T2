@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../widgets/form.dart';
+import '../../../widgets/login/form.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
