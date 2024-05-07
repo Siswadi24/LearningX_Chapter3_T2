@@ -53,6 +53,7 @@ class FormWidget extends StatelessWidget {
                       // controller: controller,
                       // style: subTitleStyle,
                       decoration: InputDecoration(
+                        isDense: true,
                         suffixIcon: title == "Password"
                             ? IconButton(
                                 onPressed: () {

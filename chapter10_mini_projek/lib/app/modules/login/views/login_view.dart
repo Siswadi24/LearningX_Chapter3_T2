@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
@@ -90,7 +88,8 @@ class LoginView extends GetView<LoginController> {
             Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   child: RichText(
                     text: TextSpan(
                       children: [
@@ -107,7 +106,7 @@ class LoginView extends GetView<LoginController> {
                         WidgetSpan(
                           alignment: PlaceholderAlignment.middle,
                           child: GestureDetector(
-                            // onTap: () => Get.toNamed(RouteName.signup),
+                            onTap: () => Get.toNamed('/register'),
                             child: Text(
                               "Sign in",
                               style: GoogleFonts.nunito(
@@ -128,8 +127,8 @@ class LoginView extends GetView<LoginController> {
                   'assets/svg/vektor_bawahKiri.svg',
                   width: Get.width,
                 ),
-                SizedBox(
-                  height: 200,
+                Positioned(
+                  bottom: 0,
                   child: SvgPicture.asset(
                     'assets/svg/vektor_bawahKanan.svg',
                     width: Get.width,
