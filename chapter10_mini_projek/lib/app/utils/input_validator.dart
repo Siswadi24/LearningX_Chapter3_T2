@@ -83,7 +83,8 @@ class InputValidator {
       controller.isConfirmPasswordInvalid.value = true;
       controller.update();
       return "*Konfirmasi password harus diisi setidaknya 6 karakter";
-    } else if (value != controller.passController.text) {
+    } else if (controller.isPasswordInvalid ==
+        controller.isConfirmPasswordInvalid) {
       controller.isConfirmPasswordInvalid.value = true;
       controller.update();
       return "*Konfirmasi password tidak sama";

@@ -210,20 +210,20 @@ class RegisterForm extends StatelessWidget {
                 obscureText: controller.isObsecureRegister,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.symmetric(vertical: 10),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      controller.isObsecureRegister =
-                          !controller.isObsecureRegister;
-                      controller.update();
-                    },
-                    icon: controller.isObsecureRegister
-                        ? SvgPicture.asset(
-                            "assets/svg/eye.svg",
-                          )
-                        : SvgPicture.asset(
-                            "assets/svg/eyeSlash.svg",
-                          ),
-                  ),
+                  // suffixIcon: IconButton(
+                  //   onPressed: () {
+                  //     controller.isObsecureRegister =
+                  //         !controller.isObsecureRegister;
+                  //     controller.update();
+                  //   },
+                  //   icon: controller.isObsecureRegister
+                  //       ? SvgPicture.asset(
+                  //           "assets/svg/eye.svg",
+                  //         )
+                  //       : SvgPicture.asset(
+                  //           "assets/svg/eyeSlash.svg",
+                  //         ),
+                  // ),
                   isDense: true,
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(

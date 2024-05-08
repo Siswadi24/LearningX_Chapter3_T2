@@ -4,96 +4,184 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class FormWidget extends StatelessWidget {
-  final String title;
-  final String hint;
+import '../../utils/input_validator.dart';
 
-  final Widget? widget;
-  const FormWidget(
-      {super.key, required this.title, required this.hint, this.widget});
+class FormWidget extends StatelessWidget {
+  const FormWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<LoginController>();
-    return Container(
-      margin: const EdgeInsets.only(top: 5),
+    final formField = GlobalKey<FormState>();
+    return Form(
+      key: formField,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              title,
-              style:
-                  GoogleFonts.nunito(fontWeight: FontWeight.w400, fontSize: 18),
+          Text(
+            "Username",
+            style:
+                GoogleFonts.nunito(fontWeight: FontWeight.w400, fontSize: 18),
+          ),
+          const SizedBox(height: 5),
+          Container(
+            // width: Get.width,
+            // height: 50,
+            padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              color: const Color(0xFFFFFFFF),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: const Color(0xFFD4D4D4), width: 1.0),
+            ),
+            child: GetBuilder<LoginController>(
+              builder: (_) => TextFormField(
+                controller: controller.usernameController,
+                validator: (value) {
+                  return InputValidator.usernameMessageValidation(
+                      value, controller);
+                },
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                  isDense: true,
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: context.theme.colorScheme.background,
+                      // width: 1,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: context.theme.colorScheme.background,
+                      width: 1,
+                    ),
+                  ),
+                  hintText: "Enter Your Username",
+                ),
+              ),
             ),
           ),
+          const SizedBox(height: 10),
+          Text(
+            "Password",
+            style:
+                GoogleFonts.nunito(fontWeight: FontWeight.w400, fontSize: 18),
+          ),
           Container(
-            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-            padding: const EdgeInsets.only(left: 5),
-            height: 50,
+            // width: Get.width,
+            // height: 50,
+            padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
             decoration: BoxDecoration(
-                border: Border.all(
-                  color: const Color(0xFFD4D4D4),
-                  width: 1.0,
+              color: const Color(0xFFFFFFFF),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: const Color(0xFFD4D4D4)),
+            ),
+            child: GetBuilder<LoginController>(
+              builder: (_) => TextFormField(
+                controller: controller.passwordController,
+                validator: (value) {
+                  return InputValidator.passMessageValidation(
+                      value, controller);
+                },
+                obscureText: controller.isObsecure,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      controller.isObsecure = !controller.isObsecure;
+                      controller.update();
+                    },
+                    icon: controller.isObsecure
+                        ? SvgPicture.asset(
+                            "assets/svg/eye.svg",
+                          )
+                        : SvgPicture.asset(
+                            "assets/svg/eyeSlash.svg",
+                          ),
+                  ),
+                  isDense: true,
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: context.theme.colorScheme.background,
+                      width: 1,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: context.theme.colorScheme.background,
+                      width: 1,
+                    ),
+                  ),
+                  hintText: "Enter Your Password",
                 ),
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white),
-            child: Row(
-              children: [
-                Expanded(
-                  child: GetBuilder<LoginController>(
-                    builder: (_) => TextFormField(
-                      obscureText:
-                          title == "Password" ? controller.isObsecure : false,
-                      readOnly: widget == null ? false : true,
-                      autofocus: false,
-                      cursorColor:
-                          Get.isDarkMode ? Colors.grey[200] : Colors.grey[700],
-                      // controller: controller,
-                      // style: subTitleStyle,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        suffixIcon: title == "Password"
-                            ? IconButton(
-                                onPressed: () {
-                                  controller.isObsecure =
-                                      !controller.isObsecure;
-                                  controller.update();
-                                },
-                                icon: controller.isObsecure
-                                    ? SvgPicture.asset(
-                                        "assets/svg/eye.svg",
-                                      )
-                                    : SvgPicture.asset(
-                                        "assets/svg/eyeSlash.svg",
-                                      ),
-                              )
-                            : null,
-                        hintText: hint,
-                        // hintStyle: subTitleStyle,
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: context.theme.colorScheme.background,
-                            width: 0,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: SizedBox(
+              width: Get.width,
+              child: ElevatedButton(
+                onPressed: controller.isLoading.value
+                    ? () {}
+                    : () async {
+                        if (formField.currentState!.validate()) {
+                          controller.login(controller.usernameController.text,
+                              controller.passwordController.text);
+                        }
+                      },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFD567CD),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: GetBuilder<LoginController>(
+                  builder: (_) => controller.isLoading.value
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
                           ),
+                        )
+                      : Text(
+                          "Login",
+                          style: GoogleFonts.nunito(
+                              fontSize: 15,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500),
                         ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: context.theme.colorScheme.background,
-                            width: 0,
-                          ),
-                        ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: "Don’t have an account ?",
+                    style: GoogleFonts.nunito(
+                      color: Colors.black,
+                      fontSize: 12,
+                    ),
+                  ),
+                  const WidgetSpan(
+                    child: SizedBox(width: 5),
+                  ),
+                  WidgetSpan(
+                    alignment: PlaceholderAlignment.middle,
+                    child: GestureDetector(
+                      onTap: () => Get.toNamed('/register'),
+                      child: Text(
+                        "Sign in",
+                        style: GoogleFonts.nunito(
+                            color: const Color(0xFF0094FF), fontSize: 12),
                       ),
                     ),
                   ),
-                ),
-                widget == null
-                    ? Container()
-                    : Container(
-                        child: widget,
-                      ),
-              ],
+                ],
+              ),
             ),
           ),
         ],

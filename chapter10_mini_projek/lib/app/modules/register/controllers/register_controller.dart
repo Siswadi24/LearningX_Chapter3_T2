@@ -75,6 +75,14 @@ class RegisterController extends GetxController {
 //register function menggunakan Username, name, address, phone, password, confirmPassword
   void register(String username, String name, String address, String phone,
       String password, String confirmPassword) async {
+    // if (passwordController != confirmPasswordController) {
+    //   Get.snackbar("Error", "Password Tidak Sesuai",
+    //       colorText: Colors.white, backgroundColor: Colors.red);
+
+    //   passwordController.clear();
+    //   confirmPasswordController.clear();
+    //   update();
+    // }
     try {
       isLoading.value = true;
       await firestore.collection("users").doc(username).set({
