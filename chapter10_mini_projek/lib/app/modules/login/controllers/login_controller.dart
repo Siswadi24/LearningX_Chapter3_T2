@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends GetxController {
   bool isObsecure = true;
@@ -57,6 +58,12 @@ class LoginController extends GetxController {
           Get.snackbar("Login Berhasil", "Selamat Datang $username",
               colorText: Colors.white,
               backgroundColor: const Color.fromARGB(131, 253, 65, 65));
+          await firestore
+              .collection('users')
+              .doc(username)
+              .update({'isLogin': true});
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setString('username', username);
           Get.offAllNamed('/home');
         } else {
           isLoading.value = false;
