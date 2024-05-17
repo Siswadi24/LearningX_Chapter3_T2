@@ -32,5 +32,6 @@ flutter:
     - assets/svg/eye.svg
     - assets/svg/eyeSlash.svg
     - assets/images/
+    - assets/images/bunga_ungu.png
   uses-material-design: true
 
